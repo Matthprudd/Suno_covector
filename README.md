@@ -1,39 +1,44 @@
 # MEYDEN AUDIO CONVERTER
 
-Application officielle de prototypage pour MEYDEN — Mouvement artistique du Québec.
+**Version :** v0.2.0, prototype du 6 novembre 2026  
+**Site public :** https://meyden-audio-converter.vercel.app  
+**Code :** https://github.com/Matthprudd/Suno_covector
 
-**Site :** https://meyden-audio-converter.vercel.app  
-**Dépôt :** https://github.com/Matthprudd/Suno_covector  
-**Version :** 0.1.0 (prototype, 2026-11-06)
+Outil de production MEYDEN — Mouvement artistique du Québec.
 
 ## Fonctionnalités
 
-- Interface responsive en français (Android et ordinateur).
-- Importation d'un fichier audio local (WAV, M4A, OGG, AAC, MP3 et autres formats reconnus par le navigateur).
-- Conversion locale en MP3 à 128, 192, 256 ou 320 kb/s via lamejs.
-- Préservation d'un MP3 importé, sans réencodage.
-- Téléchargement du résultat avec nom de fichier personnalisable.
-- Reconnaissance d'un lien de partage Suno et indication de la procédure d'export officielle.
-- Importation possible depuis un lien direct vers un fichier audio lorsque le serveur autorise l'accès CORS.
+1. Coller un lien Suno et ouvrir la page de la chanson pour un téléchargement officiel, si autorisé.
+2. Coller un lien direct vers un fichier audio accessible publiquement : importation lorsque le serveur autorise CORS.
+3. Importer un fichier audio (WAV, M4A, OGG, MP3, etc. selon le navigateur), convertir en MP3 (128/192/256/320 kb/s) localement, télécharger.
+4. **Album des Inconnus** : tenir un registre local de 22 chansons avec lien Suno, artiste, titre, droits déclarés et statut « MP3 reçu ». Export CSV.
+5. **Conversion par lots** de fichiers audio autorisés, avec lien de téléchargement pour chaque MP3.
 
-## Limites
+## À savoir
 
-Un lien de partage Suno ne constitue pas un fichier MP3 direct. L'application ne contourne ni protections d'accès, ni abonnements, ni quotas, ni droits d'auteur.
+- Un lien de partage Suno ne contient pas un fichier MP3 directement exportable. L'application ne contourne pas les limites de téléchargement, les protections d'accès ou les conditions d'utilisation de Suno.
+- Les chansons générées sur un compte Suno gratuit n'ont normalement pas de licence commerciale. Les exporter ou convertir en MP3 n'accorde aucun droit de vente. Pour les chansons déjà créées sur un compte gratuit, obtenir une **permission écrite de Suno** avant de commercialiser un album.
+- Même un abonnement pris plus tard ne garantit pas l'attribution rétroactive de droits commerciaux pour les chansons créées gratuitement.
+- Les champs « titre » et « artiste » servent au nom des fichiers, pas aux tags ID3.
+- Le débit de 320 kb/s n'améliore pas la qualité d'un fichier déjà compressé.
+- Les fichiers sont traités localement. La bibliothèque de conversion lamejs est chargée à la demande à partir d'un CDN public.
+- Les entrées de l'album sont sauvegardées dans le **stockage local du navigateur** : pas de synchronisation entre téléphones, pas de fichier audio mémorisé sur le serveur, pas de conservation après effacement du stockage navigateur.
+- Pour les lots, téléchargez chaque résultat avant de quitter la page.
+- Limite de sélection : 150 Mo par fichier; la mémoire disponible sur Android peut imposer des limites inférieures.
 
-Les fichiers choisis sont traités localement par le navigateur; la bibliothèque d'encodage est chargée à la demande depuis un CDN public. La connexion Internet est donc nécessaire pour encoder un fichier non-MP3.
+## Procédure recommandée pour L'Album des Inconnus
 
-Les champs titre et artiste affectent le nom de sortie, pas les métadonnées ID3. Le 320 kb/s ne rétablit pas la qualité absente du fichier source. Le décodage des formats et les performances varient selon le navigateur et l'appareil; limite de sélection 150 Mo.
+1. Ajouter le lien de chaque chanson au registre (jusqu'à 22).
+2. Déclarer la provenance et faire vérifier les autorisations auprès de chaque contributeur.
+3. Pour une chanson créée gratuitement sur Suno, contacter Suno à **support@suno.com** afin de solliciter une autorisation commerciale spécifique, ou produire une version originale avec les droits nécessaires.
+4. Quand un fichier audio est disponible légalement, le sélectionner dans le convertisseur ou le module de conversion par lots.
+5. Exporter le registre en CSV afin de conserver un historique hors du navigateur.
+6. Ne pas mettre l'album en vente tant que les droits de toutes les chansons ne sont pas vérifiés.
 
 ## Déploiement
 
-Le projet est un site statique mono-fichier (`index.html` à la racine). Vercel déploie automatiquement les mises à jour de la branche `main`. Aucun secret ou serveur n'est requis.
+Application statique servie depuis `index.html` à la racine. Le dépôt GitHub est lié à Vercel, branche de production `main`. Aucun secret requis.
 
-## Test manuel conseillé
+## État de validation
 
-1. Importer un WAV court dont vous disposez des droits.
-2. Sélectionner 192 kb/s puis lancer la conversion.
-3. Vérifier que le MP3 téléchargé est lisible et que le nom est correct.
-4. Tester le même parcours sur Android.
-5. Coller un lien de partage Suno, vérifier que le lien ouvre Suno sans prétendre télécharger un MP3 protégé.
-
-**Statut :** prototype à valider sur appareils réels.
+Déploiement Vercel et syntaxe JavaScript vérifiés. Conversion MP3 sur un vrai téléphone Android et compatibilité de tous les formats **non validées** à ce stade.
