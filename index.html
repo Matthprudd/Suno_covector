@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0e0d0c">
 <meta name="description" content="MEYDEN AUDIO CONVERTER : conversion locale de fichiers audio autorisés vers MP3.">
-<title>MEYDEN AUDIO CONVERTER · v0.1.0</title>
+<title>MEYDEN AUDIO CONVERTER · v0.2.0</title>
 <style>
 :root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0e0d0c;color:#f4f1e9;color-scheme:dark;--accent:#f98e35;--muted:#aea7a0;--border:#45392f;--pane:#191714}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -10%,#392017 0,transparent 42%),#0e0d0c;min-height:100vh}
@@ -38,11 +38,30 @@ input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 2px #e38a38
 .notice{color:#d3bfad;font-size:13px;line-height:1.7;padding:19px;border-left:3px solid #f98e35;background:#241b15;border-radius:0 12px 12px 0}
 footer{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;color:#8f8277;font-size:10px;letter-spacing:.12em;padding:25px 0;border-top:1px solid #342820}
 @media(max-width:600px){.wrap{padding:0 15px}header{padding:15px 0}.brand{font-size:18px}.sub{font-size:8px;letter-spacing:.13em}.chip{font-size:10px;padding:6px 8px}.hero{padding:43px 0 22px}.hero p{font-size:15px}.panel{padding:18px;margin:14px 0}h2{font-size:20px}.linkrow{flex-direction:column}.fields{grid-template-columns:1fr;gap:0}.row{align-items:flex-start;flex-direction:column;gap:8px}.row select{width:100%}.facts{gap:7px}.facts span{font-size:11px}}
+
+/* Album des Inconnus / suivi des droits et conversion par lots */
+.album-note{border:1px solid #674f34;border-radius:12px;padding:15px;background:#2b2017;margin:14px 0;font-size:13px;line-height:1.65;color:#ecd6c1}
+.album-note strong{color:#ffba75}.album-form{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.album-form .wide{grid-column:1/-1}.album-form label{margin:4px 0 7px}
+.album-form button{grid-column:1/-1}.album-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.album-list{display:grid;gap:12px;margin:15px 0}
+.album-track{border-radius:13px;padding:15px;background:#0e0d0c;border:1px solid #513b2b}
+.album-track b{color:#f7eadf}.album-track .track-meta{font-size:12px;line-height:1.8;color:#b5a69a;overflow-wrap:anywhere}
+.album-track .actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.album-track .actions button,.album-track .actions a{border:1px solid #71503a;border-radius:8px;padding:9px 10px;font-size:11px;background:#2c211b;color:#f5c299;text-decoration:none;font-weight:750}
+.album-track .actions button.danger{color:#ffaaa3;border-color:#7d3b36}
+.album-track .license{color:#ecc199;font-size:12px;margin:5px 0}
+.mini-toolbar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.mini-toolbar .btn{font-size:12px;padding:10px 15px}
+#batch-outputs a{display:block;padding:10px;margin-top:7px;text-decoration:none;color:#ffe4c9;border:1px solid #6a503d;border-radius:9px;background:#2e231a}
+#batch-outputs a:hover{background:#463025}
+@media(max-width:600px){.album-form{grid-template-columns:1fr}.album-form .wide{grid-column:auto}}
+
 </style>
 </head>
 <body>
 <div class="wrap">
-<header><div><div class="brand">MEYDEN <span>TOOLS</span></div><div class="sub">MOUVEMENT ARTISTIQUE DU QUÉBEC</div></div><div class="chip">PROTO · v0.1.0</div></header>
+<header><div><div class="brand">MEYDEN <span>TOOLS</span></div><div class="sub">MOUVEMENT ARTISTIQUE DU QUÉBEC</div></div><div class="chip">PROTO · v0.2.0</div></header>
 <main>
 <section class="hero"><div class="eyebrow">STUDIO AUDIO · OUTIL DE PRODUCTION</div><h1>Ton audio.<br><span>Ton MP3.</span></h1><p>Transforme tes fichiers audio autorisés en MP3 directement sur ton appareil. Colle un lien Suno pour accéder à la chanson et aux étapes de téléchargement autorisées.</p><div class="facts"><span>Conversion locale</span><span>128 à 320 kb/s</span><span>Android · Ordinateur</span></div></section>
 <section class="panel" aria-label="Ajouter une chanson">
@@ -52,6 +71,37 @@ footer{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;color:
 <div id="panel-file" class="hidden"><label for="audio-file" class="upload" id="drop"><strong>＋ &nbsp; Choisir un fichier audio</strong><small>WAV, MP3, M4A, OGG, AAC et autres formats reconnus par le navigateur</small><em>Parcourir mes fichiers</em></label><input id="audio-file" type="file" accept="audio/*,.wav,.m4a,.mp3,.ogg,.aac,.flac" hidden><div id="file-info" class="result hidden" aria-live="polite"></div></div>
 </section>
 <section class="panel" aria-label="Convertir en MP3"><div class="head"><div class="num">02</div><h2>Préparer le MP3</h2></div><div class="fields"><div><label for="track-title">Titre (nom du fichier)</label><input id="track-title" type="text" maxlength="80" placeholder="Ma chanson"></div><div><label for="track-artist">Artiste (nom du fichier)</label><input id="track-artist" type="text" maxlength="80" placeholder="Artiste"></div></div><label for="bitrate">Qualité du fichier MP3</label><div class="row"><select id="bitrate"><option value="128">128 kb/s · Compact</option><option value="192">192 kb/s · Standard</option><option value="256">256 kb/s · Haute qualité</option><option value="320" selected>320 kb/s · Maximum</option></select><span class="tag">SORTIE .MP3</span></div><p class="hint">Les champs titre/artiste personnalisent le nom du fichier, pas ses métadonnées ID3. Un MP3 déjà importé est copié sans perte de qualité.</p><button id="convert" type="button" class="convert" disabled><span id="convert-text">Importer un fichier pour convertir</span><span>↗</span></button><div class="progress hidden" id="progress"><div class="progress-head"><span id="progress-label">Préparation</span><span id="progress-value">0 %</span></div><div class="track"><div class="bar" id="progress-bar"></div></div></div><div id="download" class="done hidden" aria-live="polite"></div></section>
+
+<section class="panel" id="album-panel" aria-label="Album des Inconnus">
+<div class="head"><div class="num">03</div><h2>L'Album des Inconnus</h2></div>
+<p class="hint">Dossier local des chansons, des liens Suno, des droits et des MP3. Jusqu'à 22 pistes. Aucune donnée envoyée à MEYDEN.</p>
+<div class="album-note"><strong>Attention aux licences :</strong> une chanson produite sur le plan Suno gratuit ne peut normalement pas être vendue. La conversion MP3, même réussie, ne crée aucun droit commercial. Pour les titres issus du plan gratuit, demander à Suno une autorisation écrite, ou remplacer la piste par un enregistrement original dont les droits sont établis.</div>
+<div class="album-top"><strong>Registre de l'album</strong><span class="chip" id="album-count">0 / 22 pistes</span></div>
+<div class="album-form">
+<div class="wide"><label for="album-link">Lien Suno de la chanson</label><input type="url" inputmode="url" id="album-link" placeholder="https://suno.com/s/..."></div>
+<div><label for="album-title">Titre</label><input type="text" maxlength="90" id="album-title" placeholder="Titre de la chanson"></div>
+<div><label for="album-artist">Artiste</label><input type="text" maxlength="90" id="album-artist" placeholder="Nom de l'artiste"></div>
+<div class="wide"><label for="album-rights">Statut des droits déclarés</label>
+<select id="album-rights">
+<option value="unknown">À vérifier — ne pas vendre</option>
+<option value="free">Créée sur Suno gratuit — non commercial</option>
+<option value="paid">Créée / téléchargée avec plan payant — justificatifs à vérifier</option>
+<option value="licensed">Licence commerciale vérifiée par MEYDEN</option>
+<option value="original">Enregistrement original / autre source — justificatifs à vérifier</option>
+</select></div>
+<button type="button" id="album-add" class="btn">+ Ajouter la piste à l'album</button>
+</div>
+<div id="album-message" class="small" aria-live="polite"></div>
+<div id="album-list" class="album-list"></div>
+<div class="mini-toolbar"><span class="small">Registre conservé dans ce navigateur uniquement.</span><button type="button" class="btn" id="album-export">Exporter le registre (CSV)</button></div>
+<hr style="border:0;border-top:1px solid #4a3529;margin:28px 0">
+<div class="head"><div class="num">04</div><h2>Convertir plusieurs fichiers autorisés</h2></div>
+<p class="hint">Quand les artistes fournissent leurs fichiers autorisés, sélectionne plusieurs chansons. Le navigateur prépare les MP3 successivement. Aucun abonnement à MEYDEN n'est requis.</p>
+<label for="batch-files" class="upload" style="min-height:110px"><strong>+ Sélectionner plusieurs fichiers audio</strong><small>WAV, M4A, OGG, AAC, MP3 · jusqu'à 150 Mo par fichier</small><em>Ouvrir mes fichiers</em></label>
+<input type="file" id="batch-files" accept="audio/*,.wav,.m4a,.ogg,.aac,.mp3,.flac" multiple hidden>
+<div class="row" style="margin-top:15px"><button class="btn" type="button" id="batch-run" disabled>Créer les MP3 du lot</button><span class="small" id="batch-status" aria-live="polite">Aucun fichier sélectionné.</span></div>
+<div id="batch-outputs" class="result hidden" aria-live="polite"></div>
+</section>
 <div class="notice"><strong>Respect des droits et accès :</strong> l'application ne contourne ni les protections de Suno, ni les quotas, ni les restrictions d'accès. Importer un fichier audio que tu possèdes ou que tu peux télécharger légalement. Les fichiers sélectionnés sont traités sur ton appareil; la bibliothèque d'encodage est chargée depuis un CDN.</div>
 </main><footer><span>MEYDEN · STRUCTURER · CRÉER · ÉLEVER</span><span>CONVERTISSEUR AUDIO · VERSION DE TEST</span></footer>
 </div>
@@ -93,12 +143,70 @@ await encoder();var mono=audio.numberOfChannels===1,left=audio.getChannelData(0)
 var mp3=new window.lamejs.Mp3Encoder(mono?1:2,audio.sampleRate,quality),chunks=[],block=1152;
 for(var i=0;i<left.length;i+=block){var n=Math.min(block,left.length-i),l=pcm(left,i,n),r=mono?null:pcm(right,i,n),encoded=mono?mp3.encodeBuffer(l):mp3.encodeBuffer(l,r);if(encoded.length)chunks.push(new Uint8Array(encoded));if((i/block)%40===0){progress(Math.min(98,3+Math.floor(95*i/left.length)),"Encodage en cours…");await new Promise(function(done){setTimeout(done,0);});}}
 var tail=mp3.flush();if(tail.length)chunks.push(new Uint8Array(tail));progress(100,"MP3 prêt");return new Blob(chunks,{type:"audio/mpeg"});}
+window.MEYDENencodeFile=convertFile;
 convert.onclick=async function(){if(!selected||busy)return;busy=true;convert.disabled=true;convertText.textContent="Conversion en cours…";byId("download").classList.add("hidden");
 try{var output=await convertFile(selected,Number(byId("bitrate").value)||320);if(downloadURL)URL.revokeObjectURL(downloadURL);downloadURL=URL.createObjectURL(output);
 var name=(byId("track-artist").value.trim()?clean(byId("track-artist").value)+"_":"")+clean(byId("track-title").value||title(selected.name))+"_MEYDEN.mp3",box=byId("download");
 box.replaceChildren();box.classList.remove("hidden");var p=document.createElement("p");p.textContent="Ton MP3 est prêt : "+name+" · "+(output.size/1048576).toFixed(2)+" Mo";var a=document.createElement("a");a.href=downloadURL;a.download=name;a.textContent="Télécharger le MP3 ↓";box.append(p,a);a.click();}
 catch(e){result(fileInfo,"Conversion impossible",(e&&e.message?e.message:"Erreur inconnue")+". Essaie avec un WAV ou un autre navigateur.");switchTab("file");}
 finally{busy=false;convert.disabled=!selected;convertText.textContent="Créer mon MP3";}};
+})();
+</script>
+
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id);},KEY="MEYDEN_LES_INCONNUS_TRACKS_V1",MAX=22,tracks=[],urls=[];
+try{var saved=JSON.parse(localStorage.getItem(KEY)||"[]");if(Array.isArray(saved))tracks=saved.slice(0,MAX);}catch(e){tracks=[];}
+var statuses={unknown:"À vérifier — ne pas vendre",free:"Suno gratuit — non commercial",paid:"Plan payant — justificatifs à vérifier",licensed:"Licence commerciale vérifiée (déclaration)",original:"Enregistrement original — justificatifs à vérifier"};
+function notify(message){$("album-message").textContent=message;}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(tracks));}catch(e){notify("Impossible de mémoriser le registre dans ce navigateur.");}}
+function valid(url){try{var u=new URL(url);return u.protocol==="https:"&&["suno.com","www.suno.com","m.suno.com"].includes(u.hostname.toLowerCase())&&(/\/(s|song)\//.test(u.pathname)||u.pathname.startsWith("/playlist/"));}catch(e){return false;}}
+function action(parent,tag,text,handler,href){var el=document.createElement(tag);el.textContent=text;if(tag==="a"){el.href=href;el.target="_blank";el.rel="noopener noreferrer";}else{el.type="button";el.onclick=handler;}parent.appendChild(el);return el;}
+function render(){
+var container=$("album-list");container.replaceChildren();$("album-count").textContent=tracks.length+" / "+MAX+" pistes";
+if(!tracks.length){var emp=document.createElement("p");emp.className="hint";emp.textContent="Aucune piste ajoutée. Colle le premier lien Suno pour commencer ton registre.";container.appendChild(emp);return;}
+tracks.forEach(function(t,i){
+var box=document.createElement("div");box.className="album-track";var name=document.createElement("b");name.textContent=(i+1)+". "+t.title;box.appendChild(name);
+var meta=document.createElement("div");meta.className="track-meta";meta.textContent="Artiste : "+t.artist+" · MP3 : "+(t.mp3?"reçu":"à obtenir");box.appendChild(meta);
+var rights=document.createElement("div");rights.className="license";rights.textContent="Droits : "+(statuses[t.rights]||statuses.unknown);box.appendChild(rights);
+var acts=document.createElement("div");acts.className="actions";action(acts,"a","Écouter sur Suno",null,t.url);
+action(acts,"button",t.mp3?"Annuler MP3 reçu":"Marquer MP3 reçu",function(){tracks[i].mp3=!tracks[i].mp3;save();render();});
+action(acts,"button","Modifier les droits",function(){var select=document.createElement("select");Object.keys(statuses).forEach(function(k){var o=document.createElement("option");o.value=k;o.textContent=statuses[k];o.selected=t.rights===k;select.appendChild(o);});select.onchange=function(){tracks[i].rights=select.value;save();render();};rights.replaceChildren(select);select.focus();});
+var del=action(acts,"button","Retirer",function(){if(!window.confirm("Retirer cette piste du registre ?"))return;tracks.splice(i,1);save();render();});del.className="danger";
+box.appendChild(acts);container.appendChild(box);
+});
+}
+$("album-add").addEventListener("click",function(){
+var url=$("album-link").value.trim(),title=$("album-title").value.trim(),artist=$("album-artist").value.trim(),rights=$("album-rights").value;
+if(!valid(url)){notify("Entre un lien Suno valide (suno.com/s/... ou /song/...).");return;}
+if(!title||!artist){notify("Ajoute le titre et le nom de l'artiste.");return;}
+if(tracks.length>=MAX){notify("Le registre contient déjà 22 pistes.");return;}
+if(tracks.some(function(t){return t.url===url;})){notify("Ce lien figure déjà dans le registre.");return;}
+tracks.push({url:url,title:title,artist:artist,rights:rights,mp3:false});save();render();$("album-link").value="";$("album-title").value="";$("album-artist").value="";$("album-rights").value="unknown";notify("Piste enregistrée localement. Son MP3 n'a pas été téléchargé automatiquement.");
+});
+function csvCell(value){var s=String(value==null?"":value);if(/^[=+@\-]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"';}
+$("album-export").addEventListener("click",function(){
+var rows=[["Numéro","Titre","Artiste","Lien Suno","Droits déclarés","MP3 reçu"]];
+tracks.forEach(function(t,i){rows.push([i+1,t.title,t.artist,t.url,statuses[t.rights]||statuses.unknown,t.mp3?"Oui":"Non"]);});
+var blob=new Blob(["\ufeff"+rows.map(function(r){return r.map(csvCell).join(";");}).join("\r\n")],{type:"text/csv;charset=utf-8"}),u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download="MEYDEN_Les_Inconnus_Registre_2026-11-06.csv";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},5000);
+});
+render();
+var selected=[],batch=$("batch-files"),run=$("batch-run"),status=$("batch-status"),results=$("batch-outputs");
+batch.addEventListener("change",function(){selected=Array.from(batch.files||[]);run.disabled=!selected.length;status.textContent=selected.length?selected.length+" fichier(s) prêt(s) à convertir.":"Aucun fichier sélectionné.";results.classList.add("hidden");});
+function clean(s){return(s||"audio").normalize("NFKD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-zA-Z0-9 _-]/g,"").trim().replace(/\s+/g,"_").slice(0,80)||"audio";}
+run.addEventListener("click",async function(){
+if(!selected.length||!window.MEYDENencodeFile)return;run.disabled=true;results.replaceChildren();results.classList.remove("hidden");
+var h=document.createElement("h3");h.textContent="MP3 préparés";results.appendChild(h);
+var note=document.createElement("p");note.textContent="Télécharge chaque fichier ci-dessous avant de fermer la page.";results.appendChild(note);
+var quality=Number($("bitrate").value)||320,ok=0;for(var i=0;i<selected.length;i++){var f=selected[i];status.textContent="Conversion "+(i+1)+" / "+selected.length+" : "+f.name;
+if(f.size>150*1048576){var err=document.createElement("p");err.textContent="Ignoré (>150 Mo) : "+f.name;results.appendChild(err);continue;}
+try{var mp3=await window.MEYDENencodeFile(f,quality),url=URL.createObjectURL(mp3);urls.push(url);var a=document.createElement("a");a.href=url;a.download=clean(f.name.replace(/\.[^.]+$/,""))+"_MEYDEN.mp3";a.textContent="↓ "+a.download+" ("+(mp3.size/1048576).toFixed(2)+" Mo)";results.appendChild(a);ok++;}
+catch(e){var err=document.createElement("p");err.textContent="Erreur : "+f.name+" — "+e.message;results.appendChild(err);}
+}
+status.textContent=ok+" MP3 prêt(s) / "+selected.length+" fichier(s).";run.disabled=false;
+});
+window.addEventListener("pagehide",function(){urls.forEach(function(u){URL.revokeObjectURL(u);});});
 })();
 </script>
 </body></html>
