@@ -1,1 +1,104 @@
-
+<!doctype html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0e0d0c">
+<meta name="description" content="MEYDEN AUDIO CONVERTER : conversion locale de fichiers audio autorisés vers MP3.">
+<title>MEYDEN AUDIO CONVERTER · v0.1.0</title>
+<style>
+:root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0e0d0c;color:#f4f1e9;color-scheme:dark;--accent:#f98e35;--muted:#aea7a0;--border:#45392f;--pane:#191714}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -10%,#392017 0,transparent 42%),#0e0d0c;min-height:100vh}
+button,input,select{font:inherit}button,a{touch-action:manipulation}button{cursor:pointer}a{color:#ffb66f}.wrap{max-width:1020px;padding:0 23px;margin:auto}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #453225;padding:22px 0}
+.brand{font-size:23px;font-weight:900;letter-spacing:.1em}.brand span{color:var(--accent)}.sub{font-size:10px;letter-spacing:.25em;color:#e1b996;font-weight:700;margin-top:3px}.chip{color:#bfb5aa;border:1px solid var(--border);padding:7px 11px;border-radius:99px;font-size:11px;white-space:nowrap}
+.hero{padding:58px 0 38px}.eyebrow{color:#ffa459;text-transform:uppercase;letter-spacing:.18em;font-size:11px;font-weight:800}
+h1{font-weight:900;letter-spacing:-.05em;font-size:clamp(48px,9vw,88px);line-height:.97;margin:18px 0 22px}h1 span{color:var(--accent)}
+.hero p{max-width:660px;color:#d0c5ba;font-size:17px;line-height:1.65}.facts{display:flex;flex-wrap:wrap;gap:12px;margin-top:27px}.facts span{border:1px solid #4e3e32;background:#231c18;padding:10px 15px;border-radius:99px;color:#e6c4a8;font-size:12px}
+main{padding-bottom:48px}.panel{background:linear-gradient(135deg,#211b17,#171513 78%);border:1px solid #47372e;border-radius:19px;padding:27px;margin:18px 0;box-shadow:0 18px 45px #0003}
+.head{display:flex;gap:14px;align-items:center;margin-bottom:22px}.num{background:#f98e35;color:#19120e;font-weight:900;width:38px;height:38px;border-radius:12px;display:grid;place-items:center}h2{font-size:22px;margin:0;letter-spacing:-.02em}
+.tabs{display:flex;padding:5px;background:#0d0c0b;border:1px solid #3c3028;border-radius:12px;margin-bottom:24px;gap:6px}.tabs button{flex:1;border:0;border-radius:9px;background:transparent;color:#bfb2a8;padding:12px 6px;font-weight:700;font-size:14px}.tabs button.active{color:#20130a;background:var(--accent)}
+label{display:block;font-weight:650;color:#e9ddd1;font-size:13px;margin:16px 0 9px}
+input[type="url"],input[type="text"],select{width:100%;min-width:0;background:#100e0c;border:1px solid #594232;color:#fff;border-radius:11px;padding:15px 14px;outline:none}
+input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 2px #e38a3833}
+.linkrow{display:flex;gap:9px}.linkrow input{flex:1}.btn{padding:14px 20px;border:none;border-radius:11px;font-weight:800;background:var(--accent);color:#23140b}
+.btn:hover{filter:brightness(1.09)}.btn:disabled{opacity:.48;cursor:not-allowed}.hint,.small{font-size:12px;color:#b7a99c;line-height:1.65}
+.upload{display:flex;flex-direction:column;gap:7px;align-items:center;justify-content:center;text-align:center;border:2px dashed #745039;border-radius:15px;min-height:165px;padding:24px;cursor:pointer;background:#20170f}
+.upload strong{font-size:18px}.upload small{color:#bca99b}.upload em{color:var(--accent);font-style:normal;font-weight:800;font-size:13px}.upload.drag{background:#3a2619;border-color:var(--accent)}
+.hidden{display:none!important}.result{margin-top:19px;border:1px solid #6b5036;border-radius:12px;padding:16px;background:#2b2118;line-height:1.6;font-size:14px;overflow-wrap:anywhere}.result h3{margin:0 0 4px;font-size:16px}.result p{margin:5px 0;color:#d4c8bd}
+.result ol{padding-left:19px;color:#e9dcd0}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.actions a,.actions button{border:1px solid #9a6b47;background:#36251b;color:#ffd4ab;padding:10px 14px;border-radius:9px;text-decoration:none;font-weight:700;font-size:13px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:16px}.row{display:flex;align-items:center;gap:16px}.row select{flex:1}.tag{font-size:13px;font-weight:900;color:#ffad64}
+.convert{display:flex;justify-content:space-between;width:100%;text-align:left;margin-top:25px;padding:17px 20px;font-size:17px;font-weight:900;border-radius:12px;background:linear-gradient(90deg,#f88c35,#ffb568);border:0;color:#1b1009}
+.convert:disabled{filter:grayscale(.9);opacity:.5;cursor:not-allowed}
+.progress{margin-top:19px}.progress-head{display:flex;justify-content:space-between;font-size:13px;color:#e8ba94;margin-bottom:8px}
+.track{height:8px;background:#48352a;overflow:hidden;border-radius:20px}.bar{background:var(--accent);height:100%;width:0;transition:width .18s}
+.done{margin-top:18px;padding:16px;border-radius:12px;border:1px solid #577457;background:#1d2c1c}
+.done p{color:#d0e1ce}.done a{display:inline-block;background:#d5f0d1;color:#183216;text-decoration:none;font-weight:800;padding:12px 16px;border-radius:9px}
+.notice{color:#d3bfad;font-size:13px;line-height:1.7;padding:19px;border-left:3px solid #f98e35;background:#241b15;border-radius:0 12px 12px 0}
+footer{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;color:#8f8277;font-size:10px;letter-spacing:.12em;padding:25px 0;border-top:1px solid #342820}
+@media(max-width:600px){.wrap{padding:0 15px}header{padding:15px 0}.brand{font-size:18px}.sub{font-size:8px;letter-spacing:.13em}.chip{font-size:10px;padding:6px 8px}.hero{padding:43px 0 22px}.hero p{font-size:15px}.panel{padding:18px;margin:14px 0}h2{font-size:20px}.linkrow{flex-direction:column}.fields{grid-template-columns:1fr;gap:0}.row{align-items:flex-start;flex-direction:column;gap:8px}.row select{width:100%}.facts{gap:7px}.facts span{font-size:11px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div><div class="brand">MEYDEN <span>TOOLS</span></div><div class="sub">MOUVEMENT ARTISTIQUE DU QUÉBEC</div></div><div class="chip">PROTO · v0.1.0</div></header>
+<main>
+<section class="hero"><div class="eyebrow">STUDIO AUDIO · OUTIL DE PRODUCTION</div><h1>Ton audio.<br><span>Ton MP3.</span></h1><p>Transforme tes fichiers audio autorisés en MP3 directement sur ton appareil. Colle un lien Suno pour accéder à la chanson et aux étapes de téléchargement autorisées.</p><div class="facts"><span>Conversion locale</span><span>128 à 320 kb/s</span><span>Android · Ordinateur</span></div></section>
+<section class="panel" aria-label="Ajouter une chanson">
+<div class="head"><div class="num">01</div><h2>Ajouter une chanson</h2></div>
+<div class="tabs" role="tablist" aria-label="Méthode d'importation"><button type="button" id="tab-link" class="active" aria-selected="true">Coller un lien</button><button type="button" id="tab-file" aria-selected="false">Importer un fichier</button></div>
+<div id="panel-link"><label for="music-url">Lien Suno ou fichier audio direct autorisé</label><div class="linkrow"><input id="music-url" type="url" inputmode="url" placeholder="https://suno.com/s/…" autocomplete="url"><button class="btn" id="analyze" type="button">Analyser</button></div><p class="hint">Un lien de partage Suno n'est pas un fichier MP3 direct. Les autorisations et limites de téléchargement de Suno s'appliquent.</p><div id="link-result" class="result hidden" aria-live="polite"></div></div>
+<div id="panel-file" class="hidden"><label for="audio-file" class="upload" id="drop"><strong>＋ &nbsp; Choisir un fichier audio</strong><small>WAV, MP3, M4A, OGG, AAC et autres formats reconnus par le navigateur</small><em>Parcourir mes fichiers</em></label><input id="audio-file" type="file" accept="audio/*,.wav,.m4a,.mp3,.ogg,.aac,.flac" hidden><div id="file-info" class="result hidden" aria-live="polite"></div></div>
+</section>
+<section class="panel" aria-label="Convertir en MP3"><div class="head"><div class="num">02</div><h2>Préparer le MP3</h2></div><div class="fields"><div><label for="track-title">Titre (nom du fichier)</label><input id="track-title" type="text" maxlength="80" placeholder="Ma chanson"></div><div><label for="track-artist">Artiste (nom du fichier)</label><input id="track-artist" type="text" maxlength="80" placeholder="Artiste"></div></div><label for="bitrate">Qualité du fichier MP3</label><div class="row"><select id="bitrate"><option value="128">128 kb/s · Compact</option><option value="192">192 kb/s · Standard</option><option value="256">256 kb/s · Haute qualité</option><option value="320" selected>320 kb/s · Maximum</option></select><span class="tag">SORTIE .MP3</span></div><p class="hint">Les champs titre/artiste personnalisent le nom du fichier, pas ses métadonnées ID3. Un MP3 déjà importé est copié sans perte de qualité.</p><button id="convert" type="button" class="convert" disabled><span id="convert-text">Importer un fichier pour convertir</span><span>↗</span></button><div class="progress hidden" id="progress"><div class="progress-head"><span id="progress-label">Préparation</span><span id="progress-value">0 %</span></div><div class="track"><div class="bar" id="progress-bar"></div></div></div><div id="download" class="done hidden" aria-live="polite"></div></section>
+<div class="notice"><strong>Respect des droits et accès :</strong> l'application ne contourne ni les protections de Suno, ni les quotas, ni les restrictions d'accès. Importer un fichier audio que tu possèdes ou que tu peux télécharger légalement. Les fichiers sélectionnés sont traités sur ton appareil; la bibliothèque d'encodage est chargée depuis un CDN.</div>
+</main><footer><span>MEYDEN · STRUCTURER · CRÉER · ÉLEVER</span><span>CONVERTISSEUR AUDIO · VERSION DE TEST</span></footer>
+</div>
+<script>
+(function(){
+"use strict";
+var byId=function(id){return document.getElementById(id);};
+var selected=null,busy=false,downloadURL=null;
+var linkTab=byId("tab-link"),fileTab=byId("tab-file"),linkPanel=byId("panel-link"),filePanel=byId("panel-file");
+var fileInput=byId("audio-file"),fileInfo=byId("file-info"),linkResult=byId("link-result"),convert=byId("convert"),convertText=byId("convert-text");
+function switchTab(name){var l=name==="link";linkTab.classList.toggle("active",l);fileTab.classList.toggle("active",!l);linkTab.setAttribute("aria-selected",String(l));fileTab.setAttribute("aria-selected",String(!l));linkPanel.classList.toggle("hidden",!l);filePanel.classList.toggle("hidden",l);}
+linkTab.onclick=function(){switchTab("link");};fileTab.onclick=function(){switchTab("file");};
+function result(node,title,message){node.classList.remove("hidden");node.replaceChildren();var h=document.createElement("h3"),p=document.createElement("p");h.textContent=title;p.textContent=message;node.append(h,p);}
+function action(node,label,fn,href){var group=node.querySelector(".actions");if(!group){group=document.createElement("div");group.className="actions";node.append(group);}var e=document.createElement(href?"a":"button");e.textContent=label;if(href){e.href=href;e.target="_blank";e.rel="noopener noreferrer";}else{e.type="button";e.onclick=fn;}group.append(e);}
+function clean(s){return(s||"audio").normalize("NFKD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-zA-Z0-9 _-]/g,"").trim().replace(/\s+/g,"_").slice(0,70)||"audio";}
+function title(s){return s.replace(/\.[^.]+$/,"").replace(/[_-]+/g," ").trim();}
+function selectFile(file){if(!file)return;if(!file.size){result(fileInfo,"Fichier vide","Choisis un fichier non vide.");switchTab("file");return;}if(file.size>150*1024*1024){result(fileInfo,"Fichier trop volumineux","Taille maximale de ce prototype : 150 Mo.");switchTab("file");return;}selected=file;byId("track-title").value=title(file.name);result(fileInfo,"Fichier chargé",file.name+" · "+(file.size/1048576).toFixed(2)+" Mo");switchTab("file");convert.disabled=false;convertText.textContent="Créer mon MP3";byId("download").classList.add("hidden");byId("progress").classList.add("hidden");}
+fileInput.onchange=function(){if(fileInput.files&&fileInput.files[0])selectFile(fileInput.files[0]);};var drop=byId("drop");
+["dragenter","dragover"].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.add("drag");});});
+["dragleave","drop"].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.remove("drag");});});
+drop.addEventListener("drop",function(e){if(e.dataTransfer&&e.dataTransfer.files[0])selectFile(e.dataTransfer.files[0]);});
+function direct(u){return/\.(mp3|wav|m4a|ogg|aac|flac)(?:$)/i.test(u.pathname);}
+async function analyze(){var url;try{url=new URL(byId("music-url").value.trim());if(url.protocol!=="https:"&&url.protocol!=="http:")throw Error("protocole");}catch(e){result(linkResult,"Lien invalide","Colle une adresse complète commençant par https://.");return;}
+var host=url.hostname.toLowerCase();if(host==="suno.com"||host==="www.suno.com"||host==="m.suno.com"){result(linkResult,"Lien Suno reconnu","Ce lien pointe vers une page Suno, pas vers un MP3 téléchargeable directement. Ouvre ta chanson dans Suno, utilise son option officielle Download / Télécharger si elle est disponible, puis importe le fichier ici.");action(linkResult,"Ouvrir la chanson Suno",null,url.href);action(linkResult,"Importer mon fichier",function(){switchTab("file");fileInput.click();});return;}
+if(!direct(url)){result(linkResult,"Adresse reconnue","Le lien ne semble pas être un fichier audio direct. Télécharge le fichier depuis sa source autorisée, puis importe-le ici.");action(linkResult,"Ouvrir la source",null,url.href);return;}
+result(linkResult,"Fichier audio détecté","Essaie de récupérer ce fichier : il faut que son serveur autorise l'accès depuis le navigateur (CORS).");action(linkResult,"Ouvrir le fichier",null,url.href);
+action(linkResult,"Importer depuis ce lien",async function(){try{var r=await fetch(url.href,{mode:"cors",credentials:"omit"});if(!r.ok)throw Error("HTTP "+r.status);var size=Number(r.headers.get("content-length")||0);if(size>150*1048576)throw Error("fichier trop volumineux");var blob=await r.blob();if(blob.size>150*1048576)throw Error("fichier trop volumineux");var name=decodeURIComponent(url.pathname.split("/").pop()||"audio.mp3").replace(/[^a-zA-Z0-9_. -]/g,"_");selectFile(new File([blob],name,{type:blob.type||"audio/mpeg"}));}catch(e){result(linkResult,"Importation bloquée","Le fichier n'a pas pu être récupéré : "+e.message+". Il faut le télécharger auprès de sa source autorisée puis l'importer.");action(linkResult,"Ouvrir la source",null,url.href);}});
+}
+byId("analyze").onclick=analyze;byId("music-url").addEventListener("keydown",function(e){if(e.key==="Enter")analyze();});
+function progress(n,message){byId("progress").classList.remove("hidden");byId("progress-label").textContent=message;byId("progress-value").textContent=n+" %";byId("progress-bar").style.width=n+"%";}
+function loadScript(src){return new Promise(function(resolve,reject){var s=document.createElement("script");s.src=src;s.onload=resolve;s.onerror=reject;document.head.append(s);});}
+async function encoder(){if(window.lamejs&&window.lamejs.Mp3Encoder)return;try{await loadScript("https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js");}catch(e){await loadScript("https://unpkg.com/lamejs@1.2.1/lame.min.js");}if(!window.lamejs||!window.lamejs.Mp3Encoder)throw Error("Encodeur MP3 indisponible. Vérifie la connexion Internet.");}
+function pcm(buf,start,count){var out=new Int16Array(count);for(var i=0;i<count;i++){var v=Math.max(-1,Math.min(1,buf[start+i]));out[i]=v<0?Math.round(v*32768):Math.round(v*32767);}return out;}
+async function convertFile(file,quality){if(/\.mp3$/i.test(file.name)||file.type==="audio/mpeg"){progress(100,"MP3 original préservé, sans réencodage");return new Blob([file],{type:"audio/mpeg"});}
+progress(2,"Lecture de l'audio…");var bytes=await file.arrayBuffer(),Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)throw Error("Navigateur sans prise en charge de Web Audio");
+var ctx=new Audio(),audio;try{audio=await ctx.decodeAudioData(bytes.slice(0));}finally{await ctx.close().catch(function(){});}
+if(![32000,44100,48000].includes(audio.sampleRate)){if(!window.OfflineAudioContext)throw Error("Rééchantillonnage indisponible");var off=new OfflineAudioContext(Math.min(2,audio.numberOfChannels),Math.ceil(audio.duration*44100),44100),source=off.createBufferSource();source.buffer=audio;source.connect(off.destination);source.start();audio=await off.startRendering();}
+await encoder();var mono=audio.numberOfChannels===1,left=audio.getChannelData(0),right=mono?null:audio.getChannelData(1);
+var mp3=new window.lamejs.Mp3Encoder(mono?1:2,audio.sampleRate,quality),chunks=[],block=1152;
+for(var i=0;i<left.length;i+=block){var n=Math.min(block,left.length-i),l=pcm(left,i,n),r=mono?null:pcm(right,i,n),encoded=mono?mp3.encodeBuffer(l):mp3.encodeBuffer(l,r);if(encoded.length)chunks.push(new Uint8Array(encoded));if((i/block)%40===0){progress(Math.min(98,3+Math.floor(95*i/left.length)),"Encodage en cours…");await new Promise(function(done){setTimeout(done,0);});}}
+var tail=mp3.flush();if(tail.length)chunks.push(new Uint8Array(tail));progress(100,"MP3 prêt");return new Blob(chunks,{type:"audio/mpeg"});}
+convert.onclick=async function(){if(!selected||busy)return;busy=true;convert.disabled=true;convertText.textContent="Conversion en cours…";byId("download").classList.add("hidden");
+try{var output=await convertFile(selected,Number(byId("bitrate").value)||320);if(downloadURL)URL.revokeObjectURL(downloadURL);downloadURL=URL.createObjectURL(output);
+var name=(byId("track-artist").value.trim()?clean(byId("track-artist").value)+"_":"")+clean(byId("track-title").value||title(selected.name))+"_MEYDEN.mp3",box=byId("download");
+box.replaceChildren();box.classList.remove("hidden");var p=document.createElement("p");p.textContent="Ton MP3 est prêt : "+name+" · "+(output.size/1048576).toFixed(2)+" Mo";var a=document.createElement("a");a.href=downloadURL;a.download=name;a.textContent="Télécharger le MP3 ↓";box.append(p,a);a.click();}
+catch(e){result(fileInfo,"Conversion impossible",(e&&e.message?e.message:"Erreur inconnue")+". Essaie avec un WAV ou un autre navigateur.");switchTab("file");}
+finally{busy=false;convert.disabled=!selected;convertText.textContent="Créer mon MP3";}};
+})();
+</script>
+</body></html>
